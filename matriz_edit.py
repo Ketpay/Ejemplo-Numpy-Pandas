@@ -38,6 +38,7 @@ columns = pd.MultiIndex.from_tuples(lateral, names=['(Xj,Yj)', 'i/j'])
 #generamos una matriz unitaria del tamaño de los elementos
 matriz_d=np.ones((elementos, elementos))
 
+
 #hacemos un barrido en lso ejes I y J , e caso sean igual el valor a colocar es 1
 for i in range(elementos):
 	for j in range(elementos):
@@ -57,13 +58,31 @@ for i in range(elementos):
 	for j in range(elementos):
 		matriz_t[i][j]=matriz_d[i][j]/v[j]
 matriz_t=matriz_t*60
+ 
+#-----------------
+#generamos nuevas listas para almacenar datos 
+a=[]
+b=[]
+c=[]
+d=[]
+for i in range(elementos):
+	for j in range(elementos):
+		a.append(sector[0][i])
+		b.append(sector[0][j])
+		c.append(matriz_t[i][j])
+		d.append(matriz_d[i][j])
+data = {'i':a, 'j':b,"Val_T":c,"Val_D":d}
+#las agregamos en diccionarios y las mostramos
 # ------------------------------
 excel1 = pd.DataFrame (matriz_d,index=index, columns=columns)
 excel2 = pd.DataFrame (matriz_t,index=index, columns=columns)
+excel3 = pd.DataFrame (data)
 
 nombre = ".".join(nombre.split(".")[:-1])
 filepath1 = nombre + '_distancias.xlsx'
 filepath2 = nombre +'_tiempos.xlsx'
+filepath3 = nombre +'_valores.xlsx'
 excel1.to_excel(filepath1)
 excel2.to_excel(filepath2)
+excel3.to_excel(filepath3)
 
